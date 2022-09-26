@@ -1,6 +1,7 @@
 package nl.han.oose.dea.rest.resources;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -8,16 +9,11 @@ import nl.han.oose.dea.rest.services.ItemService;
 import nl.han.oose.dea.rest.services.dto.ItemDTO;
 
 import java.net.URI;
-import java.util.List;
 
 @ApplicationScoped
 @Path("/items")
 public class ItemCheckResource {
-    ItemService IS;
-
-    public ItemCheckResource() {
-        this.IS = new ItemService();
-    }
+    private ItemService IS;
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
@@ -45,5 +41,10 @@ public class ItemCheckResource {
     public Response deleteItem(@PathParam("id") int id) {
         IS.deleteItem(id);
         return Response.noContent().build();
+    }
+
+    @Inject
+    public void setIS(ItemService IS) {
+        this.IS = IS;
     }
 }
